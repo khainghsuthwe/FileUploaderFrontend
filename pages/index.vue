@@ -10,7 +10,7 @@
       />
       <h1 class="text-h4 mb-6 text-center">Image Upload</h1>
       <FileUpload @uploaded="loadFiles" />
-      <FileList :files="files" class="mt-6" />
+      <FileList :files="files" :loading="loadingFiles" class="mt-6" />
     </div>
   </v-container>
 </template>
@@ -23,6 +23,7 @@ import FileList from "~/components/FileList.vue";
 interface FileItem {
   filename: string;
   url: string;
+  displayName?: string;
 }
 
 export default Vue.extend({
