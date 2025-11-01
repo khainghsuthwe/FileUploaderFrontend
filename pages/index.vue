@@ -1,21 +1,24 @@
 <template>
-  <v-container fluid class="fill-height d-flex align-center justify-center page-container mx-auto">
-    <v-row class="fill-height d-flex align-center justify-center">
-      <v-col cols="12" md="10" lg="10" xl="8" class="d-flex flex-column align-center">
-        <div class="content-wrapper">
-          <h1 class="text-h4 mb-6 text-center">Image Upload</h1>
-          <FileUpload @uploaded="loadFiles" />
-          <FileList :files="files" class="mt-6" />
-        </div>
-      </v-col>
-    </v-row>
+  <v-container fluid class="page-container d-flex align-center justify-center">
+    <div class="content-area">
+      <v-progress-linear
+        v-if="loadingFiles"
+        color="primary"
+        indeterminate
+        height="4"
+        class="mb-4"
+      />
+      <h1 class="text-h4 mb-6 text-center">Image Upload</h1>
+      <FileUpload @uploaded="loadFiles" />
+      <FileList :files="files" class="mt-6" />
+    </div>
   </v-container>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import FileUpload from '~/components/FileUpload.vue';
-import FileList from '~/components/FileList.vue';
+import Vue from "vue";
+import FileUpload from "~/components/FileUpload.vue";
+import FileList from "~/components/FileList.vue";
 
 interface FileItem {
   filename: string;
@@ -23,11 +26,12 @@ interface FileItem {
 }
 
 export default Vue.extend({
-  name: 'IndexPage',
+  name: "IndexPage",
   components: { FileUpload, FileList },
   data() {
     return {
-      files: [] as FileItem[]
+      files: [] as FileItem[],
+      loadingFiles: false as boolean,
     };
   },
   async mounted() {
@@ -35,43 +39,49 @@ export default Vue.extend({
   },
   methods: {
     async loadFiles() {
+      this.loadingFiles = true;
       try {
-        // @ts-ignore - Nuxt injects $axios
-        const res = await (this as any).$axios.get('/upload');
+        const res = await (this as any).$axios.get("/upload");
         this.files = Array.isArray(res.data.files) ? res.data.files : [];
       } catch (err: any) {
+        const backendUrl =
+          (this as any).$config?.API_URL ||
+          process.env.API_URL ||
+          "http://localhost:5001";
         const message =
           err.response?.data?.error ||
           err.response?.data?.message ||
           err.message ||
-          'Failed to load files. Is the backend running on http://localhost:5000?';
+          `Failed to load files. Is the backend running on ${backendUrl}?`;
 
-        if ((this as any).$toast && typeof (this as any).$toast.error === 'function') {
-          // show toast for 3 seconds
-          (this as any).$toast.error(message, { duration: 3000 });
+        if ((this as any).$toast?.error) {
+          (this as any).$toast.error(message, { duration: 5000 });
         } else {
           console.error(message);
         }
+
         this.files = [];
+      } finally {
+        this.loadingFiles = false;
       }
-    }
-  }
+    },
+  },
 });
 </script>
 
 <style scoped>
 .page-container {
-  padding-top: 48px;
-  padding-bottom: 48px;
+  min-height: 100vh;
+  padding: 48px 16px;
 }
 
-.content-wrapper {
+.content-area {
   width: 100%;
-  max-width: 960px;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 800px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 </style>
