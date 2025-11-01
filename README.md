@@ -1,3 +1,49 @@
+# FileUploader Frontend
+
+This is the Nuxt 2 + Vuetify frontend for the FileUploader take-home assignment.
+
+Requirements
+
+- Node 18+
+
+Run locally (development)
+
+1. Install dependencies
+
+```bash
+cd Frontend
+npm install
+```
+
+2. Start dev server
+
+```bash
+# Optionally set API_URL to point to your backend (default fallback: http://localhost:5001)
+API_URL="http://localhost:5001" npm run dev
+```
+
+Build & Start
+
+```bash
+npm run build
+npm run start
+```
+
+Docker
+
+Build and run with Docker Compose (from project root):
+
+```bash
+docker compose up --build
+```
+
+The Docker setup sets `API_URL` to `http://backend:5001` so the frontend will talk to the backend container.
+
+Notes
+
+- The frontend uses `@nuxtjs/axios` with runtime config. Set `API_URL` environment variable to change the backend endpoint.
+- Use the browser devtools Network tab to verify requests to `/api/upload`.
+
 # frontend
 
 ## Build Setup
@@ -40,7 +86,6 @@ More information about the usage of this directory in [the documentation](https:
 Layouts are a great help when you want to change the look and feel of your Nuxt app, whether you want to include a sidebar or have distinct layouts for mobile and desktop.
 
 More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/layouts).
-
 
 ### `pages`
 
