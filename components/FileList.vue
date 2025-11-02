@@ -107,7 +107,7 @@ export default Vue.extend({
 <style scoped>
 .filelist-card {
   width: 100%;
-  border-radius: 14px;
+  border-radius: 12px;
   margin: 0 auto;
   background-color: #fafafa;
 }
@@ -119,7 +119,7 @@ export default Vue.extend({
 
 .file-item:hover {
   background-color: #f5f5f5;
-  transform: scale(1.01);
+  /* transform: scale(1.01); */
 }
 
 .file-avatar {

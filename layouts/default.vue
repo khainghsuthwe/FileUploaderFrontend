@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="whole-container">
     <div class="app-container">
       <nuxt />
     </div>
@@ -83,14 +83,16 @@ export default Vue.extend({
 .error-toast-action {
   color: white !important;
 }
-
+.whole-container {
+  background: linear-gradient(to right, #8fb6e3, #d49df2);
+}
 /* Center the app content on large screens */
 .app-container {
   width: 100%;
   max-width: 1100px; /* comfortable reading width */
   margin: 0 auto; /* center horizontally */
-  padding-left: 16px;
-  padding-right: 16px;
+  /* padding-left: 16px;
+  padding-right: 16px; */
   box-sizing: border-box;
   display: flex;
   justify-content: center;

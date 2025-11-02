@@ -8,7 +8,7 @@
         height="4"
         class="mb-4"
       />
-      <h1 class="text-h4 mb-6 text-center">Image Upload</h1>
+      <h1 class="text-h4 mb-6 text-center">Image Uploader</h1>
       <FileUpload @uploaded="loadFiles" />
       <FileList :files="files" :loading="loadingFiles" class="mt-6" />
     </div>
@@ -84,5 +84,6 @@ export default Vue.extend({
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 24px;
 }
 </style>
