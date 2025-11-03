@@ -141,7 +141,6 @@ export default Vue.extend({
 }
 
 .text-truncate {
-  max-width: 180px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
