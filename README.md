@@ -6,12 +6,23 @@ Requirements
 
 - Node 18+
 
-Run locally (development)
+## Demo
+
+- Demo application hosted [link](https://file-uploader-frontend-kinobi.vercel.app/)
+- Repository [link](https://github.com/khainghsuthwe/FileUploaderFrontend)
+
+## Run locally (development)
+
+1. Clone the Repository
+
+```bash
+git clone https://github.com/khainghsuthwe/FileUploaderFrontend.git
+```
 
 1. Install dependencies
 
 ```bash
-cd Frontend
+cd FileUploaderFrontend
 npm install
 ```
 
@@ -28,21 +39,6 @@ Build & Start
 npm run build
 npm run start
 ```
-
-Docker
-
-Build and run with Docker Compose (from project root):
-
-```bash
-docker compose up --build
-```
-
-The Docker setup sets `API_URL` to `http://backend:5001` so the frontend will talk to the backend container.
-
-Notes
-
-- The frontend uses `@nuxtjs/axios` with runtime config. Set `API_URL` environment variable to change the backend endpoint.
-- Use the browser devtools Network tab to verify requests to `/api/upload`.
 
 # frontend
 
