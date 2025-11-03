@@ -10,7 +10,12 @@
       />
       <h1 class="text-h4 mb-6 text-center">Image Uploader</h1>
       <FileUpload @uploaded="loadFiles" />
-      <FileList :files="files" :loading="loadingFiles" class="mt-6" />
+      <FileList
+        :files="files"
+        :loading="loadingFiles"
+        class="mt-6"
+        @delete="handleDelete"
+      />
     </div>
   </v-container>
 </template>
@@ -64,6 +69,44 @@ export default Vue.extend({
         this.files = [];
       } finally {
         this.loadingFiles = false;
+      }
+    },
+    async handleDelete(filename: string) {
+      if (!filename) return;
+
+      const confirmDelete = confirm(
+        "Are you sure you want to delete this file?"
+      );
+      if (!confirmDelete) return;
+
+      try {
+        const filenameParts = filename.split("/");
+        const shortFilename = filenameParts[filenameParts.length - 1];
+
+        await (this as any).$axios.delete(
+          `/upload/${encodeURIComponent(filename)}`
+        );
+
+        // Remove file from list instantly
+        this.files = this.files.filter((f) => f.filename !== filename);
+
+        if ((this as any).$toast?.success) {
+          (this as any).$toast.success("File deleted successfully!", {
+            duration: 3000,
+          });
+        }
+      } catch (err: any) {
+        const message =
+          err.response?.data?.error ||
+          err.response?.data?.message ||
+          err.message ||
+          "Failed to delete file.";
+
+        if ((this as any).$toast?.error) {
+          (this as any).$toast.error(message, { duration: 5000 });
+        } else {
+          console.error(message);
+        }
       }
     },
   },

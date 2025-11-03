@@ -1,17 +1,13 @@
 <template>
   <v-card outlined class="filelist-card elevation-2">
     <v-card-title class="text-h6 d-flex align-center justify-space-between">
-      <span> Uploaded Images ({{ files.length }})</span>
+      <span> Uploaded Images ({{ files.length }}) </span>
     </v-card-title>
-    <v-divider></v-divider>
+    <v-divider />
 
     <!-- Loading State -->
     <v-card-text v-if="loading" class="text-center py-10">
-      <v-progress-circular
-        indeterminate
-        color="primary"
-        size="40"
-      ></v-progress-circular>
+      <v-progress-circular indeterminate color="primary" size="40" />
       <p class="mt-3 mb-0 grey--text">Loading images...</p>
     </v-card-text>
 
@@ -32,35 +28,40 @@
         class="file-item"
         two-line
       >
-        <v-list-item-avatar class="file-avatar">
+        <!-- Clickable image -->
+        <v-list-item-avatar class="file-avatar" @click="openInNew(file)">
           <v-img
             :src="file.url"
             contain
+            class="rounded-image clickable"
             @error="onImageError"
-            class="rounded-image"
-          ></v-img>
+          />
         </v-list-item-avatar>
 
-        <v-list-item-content>
-          <v-list-item-title class="text-body-1 font-weight-medium">
+        <!-- Clickable filename -->
+        <v-list-item-content @click="openInNew(file)" class="clickable">
+          <v-list-item-title
+            class="text-body-1 font-weight-medium text-truncate"
+          >
             {{ file.displayName || file.filename }}
           </v-list-item-title>
         </v-list-item-content>
 
+        <!-- Delete button -->
         <v-list-item-action>
           <v-tooltip top>
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 icon
-                color="primary"
+                color="error"
                 v-bind="attrs"
                 v-on="on"
-                @click="openInNew(file)"
+                @click.stop="$emit('delete', file.filename)"
               >
-                <v-icon>mdi-open-in-new</v-icon>
+                <v-icon>mdi-delete</v-icon>
               </v-btn>
             </template>
-            <span>Open</span>
+            <span>Delete</span>
           </v-tooltip>
         </v-list-item-action>
       </v-list-item>
@@ -71,12 +72,6 @@
 <script lang="ts">
 import Vue from "vue";
 import type { FileItem } from "~/types/FileItem";
-
-// interface FileItem {
-//   filename: string;
-//   url: string;
-//   displayName?: string;
-// }
 
 export default Vue.extend({
   name: "FileList",
@@ -98,7 +93,9 @@ export default Vue.extend({
       }
     },
     openInNew(file: FileItem) {
-      window.open(file.url, "_blank", "noopener");
+      if (file?.url) {
+        window.open(file.url, "_blank", "noopener");
+      }
     },
   },
 });
@@ -119,7 +116,6 @@ export default Vue.extend({
 
 .file-item:hover {
   background-color: #f5f5f5;
-  /* transform: scale(1.01); */
 }
 
 .file-avatar {
@@ -133,6 +129,22 @@ export default Vue.extend({
 .rounded-image {
   border-radius: 12px;
   object-fit: cover;
+}
+
+.clickable {
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.clickable:hover {
+  opacity: 0.85;
+}
+
+.text-truncate {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .v-list-item-action .v-btn {
