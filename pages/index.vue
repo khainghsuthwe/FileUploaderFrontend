@@ -24,12 +24,13 @@
 import Vue from "vue";
 import FileUpload from "~/components/FileUpload.vue";
 import FileList from "~/components/FileList.vue";
+import { FileItem } from "~/types/FileItem";
 
-interface FileItem {
-  filename: string;
-  url: string;
-  displayName?: string;
-}
+// interface FileItem {
+//   filename: string;
+//   url: string;
+//   displayName?: string;
+// }
 
 export default Vue.extend({
   name: "IndexPage",
@@ -80,9 +81,6 @@ export default Vue.extend({
       if (!confirmDelete) return;
 
       try {
-        const filenameParts = filename.split("/");
-        const shortFilename = filenameParts[filenameParts.length - 1];
-
         await (this as any).$axios.delete(
           `/upload/${encodeURIComponent(filename)}`
         );
